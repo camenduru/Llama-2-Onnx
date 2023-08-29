@@ -5,20 +5,20 @@ import gradio as gr
 import gc
 from interface.hddr_llama_onnx_interface import LlamaOnnxInterface
 from interface.empty_stub_interface import EmptyStubInterface
-from ChatApp.app_modules.utils import (
+from app_modules.utils import (
     reset_textbox,
     transfer_input,
     reset_state,
     delete_last_conversation,
     cancel_outputing,
 )
-from ChatApp.app_modules.presets import (
+from app_modules.presets import (
     small_and_beautiful_theme,
     title,
     description_top,
     description,
 )
-from ChatApp.app_modules.overwrites import postprocess
+from app_modules.overwrites import postprocess
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -33,13 +33,6 @@ top_directory = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 tokenizer_path = os.path.join(top_directory, "tokenizer.model")
 
 available_models = {
-    "LLaMA 7B Float16": {
-        "onnx_file": os.path.join(
-            top_directory, "7B_float16", "ONNX", "LlamaV2_7B_float16.onnx"
-        ),
-        "tokenizer_path": tokenizer_path,
-        "embedding_file": os.path.join(top_directory, "7B_float16", "embeddings.pth"),
-    },
     "LLaMA 7B Chat Float16": {
         "onnx_file": os.path.join(
             top_directory, "7B_FT_float16", "ONNX", "LlamaV2_7B_FT_float16.onnx"
@@ -47,54 +40,6 @@ available_models = {
         "tokenizer_path": tokenizer_path,
         "embedding_file": os.path.join(
             top_directory, "7B_FT_float16", "embeddings.pth"
-        ),
-    },
-    "LLaMA 13B Float16": {
-        "onnx_file": os.path.join(
-            top_directory, "13B_float16", "ONNX", "LlamaV2_13B_float16.onnx"
-        ),
-        "tokenizer_path": tokenizer_path,
-        "embedding_file": os.path.join(top_directory, "13B_float16", "embeddings.pth"),
-    },
-    "LLaMA 13B Chat Float16": {
-        "onnx_file": os.path.join(
-            top_directory, "13B_FT_float16", "ONNX", "LlamaV2_13B_FT_float16.onnx"
-        ),
-        "tokenizer_path": tokenizer_path,
-        "embedding_file": os.path.join(
-            top_directory, "13B_FT_float16", "embeddings.pth"
-        ),
-    },
-    "LLaMA 7B Float32": {
-        "onnx_file": os.path.join(
-            top_directory, "7B_float32", "ONNX", "LlamaV2_7B_float32.onnx"
-        ),
-        "tokenizer_path": tokenizer_path,
-        "embedding_file": os.path.join(top_directory, "7B_float32", "embeddings.pth"),
-    },
-    "LLaMA 7B Chat Float32": {
-        "onnx_file": os.path.join(
-            top_directory, "7B_FT_float32", "ONNX", "LlamaV2_7B_FT_float32.onnx"
-        ),
-        "tokenizer_path": tokenizer_path,
-        "embedding_file": os.path.join(
-            top_directory, "7B_FT_float32", "embeddings.pth"
-        ),
-    },
-    "LLaMA 13B Float32": {
-        "onnx_file": os.path.join(
-            top_directory, "13B_float32", "ONNX", "LlamaV2_13B_float32.onnx"
-        ),
-        "tokenizer_path": tokenizer_path,
-        "embedding_file": os.path.join(top_directory, "13B_float32", "embeddings.pth"),
-    },
-    "LLaMA 13B Chat Float32": {
-        "onnx_file": os.path.join(
-            top_directory, "13B_FT_float32", "ONNX", "LlamaV2_13B_FT_float32.onnx"
-        ),
-        "tokenizer_path": tokenizer_path,
-        "embedding_file": os.path.join(
-            top_directory, "13B_FT_float32", "embeddings.pth"
         ),
     },
 }
@@ -298,4 +243,4 @@ with gr.Blocks(css=custom_css, theme=small_and_beautiful_theme) as demo:
 
 demo.title = "Llama Chat UI"
 
-demo.queue(concurrency_count=1).launch()
+demo.queue(concurrency_count=1).launch(share=True)
